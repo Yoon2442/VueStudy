@@ -1,0 +1,142 @@
+<template>
+  <el-row>
+    <el-col :span="2"></el-col>
+    <el-col :span="20">
+      <el-card>
+        <div>
+          <router-link :to="{ path: '/' }">
+            <el-button type="text" class="left-button">Back</el-button>
+          </router-link>
+
+          <span>{{ getTitle }}</span>
+
+          <el-button @click="writeArticle" type="text" class="right-button"
+            >저장</el-button
+          >
+        </div>
+        <br /><br />
+
+        <div>
+          <el-form
+            :label-position="top"
+            label-width="100px"
+            :model="formLabelAlign"
+          >
+            <el-form-item label="사용자 ID">
+              <el-input
+                type="text"
+                v-model="user_id"
+                placeholder="사용자 ID를 입력하세요."
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="제목">
+              <el-input
+                type="text"
+                v-model="title"
+                placeholder="제목을 입력하세요. "
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="본문">
+              <el-input
+                type="textarea"
+                v-model="body"
+                placeholder="본문을 입력하세요. "
+                rows="10"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col :span="3"></el-col>
+  </el-row>
+</template>
+
+<script>
+import apiBoard from "@/api/board";
+
+export default {
+  data() {
+    return {
+      user_id: "",
+      title: "",
+      body: "",
+    };
+  },
+
+  computed: {
+    getTitle() {
+      if (this.$route.params.id) return "게시물 수정하기";
+      return "게시물 작성하기";
+    },
+  },
+
+  mounted() {
+    if (this.$route.params.id) {
+      apiBoard
+        .getArticle(this.$route.params.id)
+        .then((response) => {
+          console.log("getArticle", response);
+          this.user_id = response.data.user_id;
+          this.title = response.data.title;
+          this.body = response.data.body;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  },
+
+  methods: {
+    writeArticle() {
+      if (!this.title || !this.body || !this.user_id) {
+        this.$message.error("빈 칸 없이 작성해주세요.");
+        return;
+      }
+
+      if (this.$route.params.id) {
+        // debugger;
+        apiBoard
+          .patchArticle(
+            this.$route.params.id,
+            this.user_id,
+            this.title,
+            this.body
+          )
+          //   .patchArticle()
+          .then((response) => {
+            console.log(response);
+            this.$router.push({ path: "/" });
+          })
+          .catch((e) => {
+            console.log(e);
+            this.$message.error("게시물 수정 중 에러가 발생하였습니다.");
+          });
+        return;
+      }
+
+      apiBoard
+        .postArticle(this.user_id, this.title, this.body)
+        .then((response) => {
+          console.log(response);
+          this.$router.push({ path: "/" });
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("게시물 작성 중 에러가 발생하였습니다.");
+        });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.left-button {
+  float: left;
+  padding: 3px 0;
+}
+.right-button {
+  float: right;
+  padding: 3px 0;
+}
+</style>
