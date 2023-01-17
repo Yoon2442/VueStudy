@@ -10,39 +10,20 @@
 
           <span>{{ getTitle }}</span>
 
-          <el-button @click="writeArticle" type="text" class="right-button"
-            >저장</el-button
-          >
+          <el-button @click="writeArticle" type="text" class="right-button">저장</el-button>
         </div>
         <br /><br />
 
         <div>
-          <el-form
-            :label-position="top"
-            label-width="100px"
-            :model="formLabelAlign"
-          >
+          <el-form :label-position="top" label-width="100px" :model="formLabelAlign">
             <el-form-item label="사용자 ID">
-              <el-input
-                type="text"
-                v-model="user_id"
-                placeholder="사용자 ID를 입력하세요."
-              ></el-input>
+              <el-input type="text" v-model="user_id" placeholder="사용자 ID를 입력하세요."></el-input>
             </el-form-item>
             <el-form-item label="제목">
-              <el-input
-                type="text"
-                v-model="title"
-                placeholder="제목을 입력하세요. "
-              ></el-input>
+              <el-input type="text" v-model="title" placeholder="제목을 입력하세요. "></el-input>
             </el-form-item>
             <el-form-item label="본문">
-              <el-input
-                type="textarea"
-                v-model="body"
-                placeholder="본문을 입력하세요. "
-                rows="10"
-              ></el-input>
+              <el-input type="textarea" v-model="body" placeholder="본문을 입력하세요. " rows="10"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -135,6 +116,7 @@ export default {
   float: left;
   padding: 3px 0;
 }
+
 .right-button {
   float: right;
   padding: 3px 0;
