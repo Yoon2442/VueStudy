@@ -17,6 +17,9 @@
         <a href="/board/write" class="write_btn">
             <img src="/images/pen_icon.png" />
         </a>
+        <button v-on:click="testButtonClicked" class="btn_test">
+            <img src="/images/test_icon.png" />
+        </button>
     </div>
 </template>
 
@@ -34,7 +37,7 @@ export default {
         apiBoard
             .getArticles(0)
             .then((response) => {
-                console.log("getArticles", response);
+                // console.log("getArticles", response);
                 this.articles = response.data;
             })
             .catch((e) => {
@@ -48,6 +51,17 @@ export default {
                 path: `/board/detail/${row.id}`,
             });
         },
+        testButtonClicked() {
+            apiBoard
+                .getTestItem()
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    this.$message.error("test error");
+                });
+        }
     },
 };
 </script>
@@ -64,6 +78,28 @@ export default {
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
     z-index: 10;
     display: inline-block;
+}
+
+.btn_test {
+    position: fixed;
+    bottom: 40px;
+    right: 100px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50px;
+    background: #17b686;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    /* display: inline-block; */
+    display: flex;
+    align-items: center;
+}
+
+.btn_test img {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
 }
 
 .write_btn img {

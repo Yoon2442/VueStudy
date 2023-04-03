@@ -6,7 +6,7 @@ const BASE_URL = "//localhost:8081/";
 
 export default {
   getArticles: function (page) {
-    console.log(page);
+    // console.log(page);
     return axios.get(BASE_URL + "board/list");
   },
 
@@ -38,4 +38,8 @@ export default {
   deleteArticle: function (id) {
     return axios.delete(BASE_URL + `board/${id}`);
   },
+
+  getTestItem: function(){
+    return axios.get(BASE_URL + "board/get-test");
+  }
 };
